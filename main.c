@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include "evaluation.h"
 
-char tab[LARGEUR][HAUTEUR];
 
-void lecturetest(){
+void lecturetest(char tab[LARGEUR][HAUTEUR]){
     char *texte = NULL;
     long longueur = 0;
     FILE *f=fopen("test", "r");
@@ -49,7 +48,18 @@ void lecturetest(){
     fclose(f);
 }
 
-void affichage(){
+void affichage(char tab[LARGEUR][HAUTEUR], combinaison *resultat){
+    printf("résultat de l'évaluation :\n");
+    if(resultat) {
+        printf("%d points soleils\n", resultat->nb_soleils);
+        printf("%d points fraises\n", resultat->nb_fraises);
+        printf("%d points oignons\n", resultat->nb_oignons);
+        printf("%d points pommes\n", resultat->nb_pommes);
+        printf("%d points mandarine\n", resultat->nb_mandarine);
+    } else {
+        printf("aucune combinaison trouvée\n");
+    }
+    printf("\n");
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;colonne++){
             printf("%c",tab[colonne][ligne]);
@@ -60,8 +70,12 @@ void affichage(){
 
 
 int main(void) {
-    lecturetest();
-    affichage();
+    char tab[LARGEUR][HAUTEUR];
+    combinaison *resultat;
+
+    lecturetest(tab);
+    resultat = evaluation(tab);
+    affichage(tab, resultat);
 
     return 0;
 }
