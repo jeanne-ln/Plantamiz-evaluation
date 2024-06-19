@@ -22,12 +22,12 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
                             nb++;
                             i++;
                         }
-                        if (nb > 4) {
+                        if (nb >= 4) {
                             resultat.nb_soleils += nb;
                             for (int j = colonne; j<colonne+i; j++) {
                                 resultat.elimination[j][ligne] = 1;
                             }
-                            colonne=colonne+i-1;
+                            colonne=colonne+i-2;
                         }
                     }
                     continue;
@@ -39,12 +39,12 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
                             nb++;
                             i++;
                         }
-                        if (nb > 4) {
+                        if (nb >= 4) {
                             resultat.nb_fraises += nb;
                             for (int j = colonne; j<colonne+i; j++) {
                                 resultat.elimination[j][ligne] = 1;
                             }
-                            colonne=colonne+i-1;
+                            colonne=colonne+i-2;
                         }
                     }
                     continue;
@@ -56,12 +56,12 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
                             nb++;
                             i++;
                         }
-                        if (nb > 4) {
+                        if (nb >= 4) {
                             resultat.nb_oignons += nb;
                             for (int j = colonne; j<colonne+i; j++) {
                                 resultat.elimination[j][ligne] = 1;
                             }
-                            colonne=colonne+i-1;
+                            colonne=colonne+i-2;
                         }
                     }
                     continue;
@@ -73,12 +73,12 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
                             nb++;
                             i++;
                         }
-                        if (nb > 4) {
+                        if (nb >= 4) {
                             resultat.nb_pommes += nb;
                             for (int j = colonne; j<colonne+i; j++) {
                                 resultat.elimination[j][ligne] = 1;
                             }
-                            colonne=colonne+i-1;
+                            colonne=colonne+i-2;
                         }
                     }
                     continue;
@@ -95,7 +95,7 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
                             for (int j = colonne; j<colonne+i; j++) {
                                 resultat.elimination[j][ligne] = 1;
                             }
-                            colonne=colonne+i-1;
+                            colonne=colonne+i-2;
                         }
                     }
                     continue;
