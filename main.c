@@ -62,7 +62,11 @@ void affichage(char tab[LARGEUR][HAUTEUR], combinaison *resultat){
     printf("\n");
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;colonne++){
-            printf("%c",tab[colonne][ligne]);
+            if(resultat && resultat->elimination[colonne][ligne]) {
+                printf(".");
+            } else {
+                printf("%c",tab[colonne][ligne]);
+            }
         }
         printf("\n");
     }
