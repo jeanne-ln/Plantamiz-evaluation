@@ -45,6 +45,7 @@ void lecturetest(char tab[LARGEUR][HAUTEUR]){
             }
         }
     }
+    free(texte);
     fclose(f);
 }
 
