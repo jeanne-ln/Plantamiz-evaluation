@@ -4,21 +4,105 @@
 combinaison resultat;
 
 combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
-    resultat.nb_soleils=1;
-    resultat.nb_fraises=2;
-    resultat.nb_oignons=3;
-    resultat.nb_pommes=4;
-    resultat.nb_mandarine=5;
+    int nb=0,i=1;
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;colonne++){
             resultat.elimination[colonne][ligne] = 0;
         }
     }
-    resultat.elimination[0][0] = 1;
-    resultat.elimination[1][1] = 1;
-    resultat.elimination[2][2] = 1;
-    resultat.elimination[3][3] = 1;
-    resultat.elimination[4][4] = 1;
-    resultat.elimination[5][5] = 1;
+    for(int ligne=0;ligne<HAUTEUR;ligne++){
+        for(int colonne=0;colonne<LARGEUR;colonne++){
+            if(tab[colonne][ligne]==tab[colonne+1][ligne]){
+                nb=0;
+                i=1;
+                if(tab[colonne][ligne]=='S') {
+                    nb++;
+                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
+                        while (tab[colonne + i][ligne] == 'S') {
+                            nb++;
+                            i++;
+                        }
+                        if (nb > 4) {
+                            resultat.nb_soleils += nb;
+                            for (int j = colonne; j<colonne+i; j++) {
+                                resultat.elimination[j][ligne] = 1;
+                            }
+                            colonne=colonne+i-1;
+                        }
+                    }
+                    continue;
+                }
+                if(tab[colonne][ligne]=='F') {
+                    nb++;
+                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
+                        while (tab[colonne + i][ligne] == 'F') {
+                            nb++;
+                            i++;
+                        }
+                        if (nb > 4) {
+                            resultat.nb_fraises += nb;
+                            for (int j = colonne; j<colonne+i; j++) {
+                                resultat.elimination[j][ligne] = 1;
+                            }
+                            colonne=colonne+i-1;
+                        }
+                    }
+                    continue;
+                }
+                if(tab[colonne][ligne]=='O') {
+                    nb++;
+                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
+                        while (tab[colonne + i][ligne] == 'O') {
+                            nb++;
+                            i++;
+                        }
+                        if (nb > 4) {
+                            resultat.nb_oignons += nb;
+                            for (int j = colonne; j<colonne+i; j++) {
+                                resultat.elimination[j][ligne] = 1;
+                            }
+                            colonne=colonne+i-1;
+                        }
+                    }
+                    continue;
+                }
+                if(tab[colonne][ligne]=='P') {
+                    nb++;
+                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
+                        while (tab[colonne + i][ligne] == 'P') {
+                            nb++;
+                            i++;
+                        }
+                        if (nb > 4) {
+                            resultat.nb_pommes += nb;
+                            for (int j = colonne; j<colonne+i; j++) {
+                                resultat.elimination[j][ligne] = 1;
+                            }
+                            colonne=colonne+i-1;
+                        }
+                    }
+                    continue;
+                }
+                if(tab[colonne][ligne]=='M') {
+                    nb++;
+                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
+                        while (tab[colonne + i][ligne] == 'M') {
+                            nb++;
+                            i++;
+                        }
+                        if (nb >= 4) {
+                            resultat.nb_mandarine += nb;
+                            for (int j = colonne; j<colonne+i; j++) {
+                                resultat.elimination[j][ligne] = 1;
+                            }
+                            colonne=colonne+i-1;
+                        }
+                    }
+                    continue;
+                }
+            }
+        }
+    }
+
     return &resultat;
 }

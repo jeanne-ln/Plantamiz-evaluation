@@ -24,3 +24,5 @@ typedef struct combinaison{
 } combinaison;
 
 combinaison* evaluation(char tab[LARGEUR][HAUTEUR]);
+void affichage(char tab[LARGEUR][HAUTEUR], combinaison *resultat);
+void lecturetest(char tab[LARGEUR][HAUTEUR]);
