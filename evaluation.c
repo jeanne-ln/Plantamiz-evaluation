@@ -4,105 +4,47 @@
 combinaison resultat;
 
 combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
-    int nb=0,i=1;
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;colonne++){
             resultat.elimination[colonne][ligne] = 0;
         }
     }
+    resultat.nb_soleils = 0;
+    resultat.nb_fraises = 0;
+    resultat.nb_mandarine =0;
+    resultat.nb_oignons =0 ;
+    resultat.nb_pommes =0 ;
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;colonne++){
-            if(tab[colonne][ligne]==tab[colonne+1][ligne]){
-                nb=0;
-                i=1;
-                if(tab[colonne][ligne]=='S') {
-                    nb++;
-                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
-                        while (tab[colonne + i][ligne] == 'S') {
-                            nb++;
-                            i++;
-                        }
-                        if (nb >= 4) {
-                            resultat.nb_soleils += nb;
-                            for (int j = colonne; j<colonne+i; j++) {
-                                resultat.elimination[j][ligne] = 1;
-                            }
-                            colonne=colonne+i-2;
+            char symbole=tab[colonne][ligne];
+            int longueur=1;
+            int score=0;
+            while (colonne<LARGEUR && tab[++colonne][ligne] == symbole) {
+                longueur++;
+            }
+            if (longueur >= 6) {
+                for(int i=0;i<HAUTEUR;i++){
+                    for(int j=0;j<LARGEUR;j++){
+                        if(tab[j][i]==symbole){
+                            score++;
+                            resultat.elimination[j][i]=1;
                         }
                     }
-                    continue;
                 }
-                if(tab[colonne][ligne]=='F') {
-                    nb++;
-                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
-                        while (tab[colonne + i][ligne] == 'F') {
-                            nb++;
-                            i++;
-                        }
-                        if (nb >= 4) {
-                            resultat.nb_fraises += nb;
-                            for (int j = colonne; j<colonne+i; j++) {
-                                resultat.elimination[j][ligne] = 1;
-                            }
-                            colonne=colonne+i-2;
-                        }
-                    }
-                    continue;
+            }else if(longueur>=4) {
+                score=longueur;
+                for (int j = colonne-longueur; j<colonne; j++){
+                    resultat.elimination[j][ligne] = 1;
                 }
-                if(tab[colonne][ligne]=='O') {
-                    nb++;
-                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
-                        while (tab[colonne + i][ligne] == 'O') {
-                            nb++;
-                            i++;
-                        }
-                        if (nb >= 4) {
-                            resultat.nb_oignons += nb;
-                            for (int j = colonne; j<colonne+i; j++) {
-                                resultat.elimination[j][ligne] = 1;
-                            }
-                            colonne=colonne+i-2;
-                        }
-                    }
-                    continue;
-                }
-                if(tab[colonne][ligne]=='P') {
-                    nb++;
-                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
-                        while (tab[colonne + i][ligne] == 'P') {
-                            nb++;
-                            i++;
-                        }
-                        if (nb >= 4) {
-                            resultat.nb_pommes += nb;
-                            for (int j = colonne; j<colonne+i; j++) {
-                                resultat.elimination[j][ligne] = 1;
-                            }
-                            colonne=colonne+i-2;
-                        }
-                    }
-                    continue;
-                }
-                if(tab[colonne][ligne]=='M') {
-                    nb++;
-                    if (tab[colonne][ligne] == tab[colonne + 1][ligne]) {
-                        while (tab[colonne + i][ligne] == 'M') {
-                            nb++;
-                            i++;
-                        }
-                        if (nb >= 4) {
-                            resultat.nb_mandarine += nb;
-                            for (int j = colonne; j<colonne+i; j++) {
-                                resultat.elimination[j][ligne] = 1;
-                            }
-                            colonne=colonne+i-2;
-                        }
-                    }
-                    continue;
-                }
+            }
+            switch(symbole) {
+                case 'S': resultat.nb_soleils += score; break;
+                case 'F': resultat.nb_fraises += score; break;
+                case 'M': resultat.nb_mandarine += score; break;
+                case 'O': resultat.nb_oignons += score; break;
+                case 'P': resultat.nb_pommes += score; break;
             }
         }
     }
-
     return &resultat;
 }
