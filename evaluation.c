@@ -1,25 +1,37 @@
 #include <stdio.h>
 #include "evaluation.h"
 
+void horizontal(char tab[LARGEUR][HAUTEUR]);
+void vertical(char tab[LARGEUR][HAUTEUR]);
 combinaison resultat;
 
-combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
-    for(int ligne=0;ligne<HAUTEUR;ligne++){
-        for(int colonne=0;colonne<LARGEUR;colonne++){
+combinaison* evaluation(char tab[LARGEUR][HAUTEUR]) {
+
+    for (int ligne = 0; ligne < HAUTEUR; ligne++) {
+        for (int colonne = 0; colonne < LARGEUR; colonne++) {
             resultat.elimination[colonne][ligne] = 0;
         }
     }
     resultat.nb_soleils = 0;
     resultat.nb_fraises = 0;
-    resultat.nb_mandarine =0;
-    resultat.nb_oignons =0 ;
-    resultat.nb_pommes =0 ;
+    resultat.nb_mandarine = 0;
+    resultat.nb_oignons = 0;
+    resultat.nb_pommes = 0;
+    horizontal(tab);
+    vertical(tab);
+    if(resultat.nb_soleils +resultat.nb_fraises + resultat.nb_mandarine + resultat.nb_oignons + resultat.nb_pommes){
+        return &resultat;
+    }
+    return 0;
+}
+
+void horizontal(char tab[LARGEUR][HAUTEUR]){
     for(int ligne=0;ligne<HAUTEUR;ligne++){
-        for(int colonne=0;colonne<LARGEUR;colonne++){
+        for(int colonne=0;colonne<LARGEUR;){
             char symbole=tab[colonne][ligne];
             int longueur=1;
             int score=0;
-            while (colonne<LARGEUR && tab[++colonne][ligne] == symbole) {
+            while (colonne++<LARGEUR-1 && tab[colonne][ligne] == symbole) {
                 longueur++;
             }
             if (longueur >= 6) {
@@ -46,17 +58,20 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
             }
         }
     }
+}
+
+void vertical(char tab[LARGEUR][HAUTEUR]){
     for(int colonne=0;colonne<LARGEUR;colonne++){
-        for(int ligne=0;ligne<HAUTEUR;ligne++){
+        for(int ligne=0;ligne<HAUTEUR;){
             char symbole=tab[colonne][ligne];
             int longueur=1;
             int score=0;
-            while (ligne<HAUTEUR && tab[colonne][++ligne] == symbole) {
+            while (ligne++<HAUTEUR-1 && tab[colonne][ligne] == symbole) {
                 longueur++;
             }
             if (longueur >= 6) {
-                for(int i=0;i<LARGEUR;i++){
-                    for(int j=0;j<HAUTEUR;j++){
+                for(int i=0;i<HAUTEUR;i++){
+                     for(int j=0;j<LARGEUR;j++){
                         if(tab[j][i]==symbole){
                             score++;
                             resultat.elimination[j][i]=1;
@@ -65,8 +80,8 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
                 }
             }else if(longueur>=3) {
                 score=longueur;
-                for (int j = ligne-longueur; j<ligne; j++){
-                    resultat.elimination[colonne][j] = 1;
+                for (int i = ligne-longueur; i<ligne; i++){
+                    resultat.elimination[colonne][i] = 1;
                 }
             }
             switch(symbole) {
@@ -78,5 +93,4 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]){
             }
         }
     }
-    return &resultat;
 }
