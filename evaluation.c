@@ -5,7 +5,7 @@
 void motif_horizontal(char tab[LARGEUR][HAUTEUR]);
 void motif_vertical(char tab[LARGEUR][HAUTEUR]);
 void motif_h(char tab[LARGEUR][HAUTEUR]);
-void motif_rect(char tab[LARGEUR][HAUTEUR);
+void motif_rect(char tab[LARGEUR][HAUTEUR]);
 void MAJ_score(char symbole, int score);
 int haut(char tab[LARGEUR][HAUTEUR], int colonne,int ligne);
 int bas(char tab[LARGEUR][HAUTEUR], int colonne,int ligne);
@@ -27,9 +27,10 @@ combinaison* evaluation(char tab[LARGEUR][HAUTEUR]) {
     resultat.nb_mandarine = 0;
     resultat.nb_oignons = 0;
     resultat.nb_pommes = 0;
-    //motif_horizontal(tab);
-    //motif_vertical(tab);
+    motif_horizontal(tab);
+    motif_vertical(tab);
     motif_h(tab);
+    motif_rect(tab);
     if(resultat.nb_soleils +resultat.nb_fraises + resultat.nb_mandarine + resultat.nb_oignons + resultat.nb_pommes){
         return &resultat;
     }
@@ -173,6 +174,43 @@ void motif_h(char tab[LARGEUR][HAUTEUR]){
                 int score=2*(2*hauteur+largeur-2);
                 char symbole=tab[colonne][ligne];
                 MAJ_score(symbole,score);
+            }
+        }
+    }
+}
+
+
+void motif_rect(char tab[LARGEUR][HAUTEUR]){
+    for(int ligne=0;ligne<HAUTEUR;ligne++){
+        for(int colonne=0;colonne<LARGEUR;colonne++){
+            int hauteur_max=bas(tab, colonne,ligne);
+            int largeur_max=droite(tab,colonne,ligne);
+            if(hauteur_max<2 || largeur_max<2){
+                continue;
+            }
+            for(int l=ligne+1;l<=ligne+hauteur_max-1;l++){
+                for(int c=colonne+1;c<=colonne+largeur_max-1;c++){
+                    int hauteur=l-ligne+1;
+                    int largeur=c-colonne+1;
+                    if(haut(tab,c,l)<hauteur){
+                        continue;
+                    }
+                    if(gauche(tab,c,l)<largeur){
+                        continue;
+                    }
+                    //on a un rectangle !!
+                    for(int lig=ligne;lig<=ligne+hauteur-1;lig++){
+                        resultat.elimination[colonne][lig]=1;
+                        resultat.elimination[colonne+largeur-1][lig]=1;
+                    }
+                    for(int col=colonne;col<=colonne+largeur-1;col++){
+                        resultat.elimination[col][ligne]=1;
+                        resultat.elimination[col][ligne+hauteur-1]=1;
+                    }
+                    int score=2*hauteur*largeur;
+                    char symbole=tab[colonne][ligne];
+                    MAJ_score(symbole,score);
+                }
             }
         }
     }
