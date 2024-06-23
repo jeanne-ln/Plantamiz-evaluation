@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "evaluation.h"
+#include "plateau.h"
 
 void motif_horizontal(char tab[LARGEUR][HAUTEUR]);
 void motif_vertical(char tab[LARGEUR][HAUTEUR]);

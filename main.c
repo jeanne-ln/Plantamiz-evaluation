@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "evaluation.h"
+#include "plateau.h"
 
 
 void lecturetest(char tab[LARGEUR][HAUTEUR]){

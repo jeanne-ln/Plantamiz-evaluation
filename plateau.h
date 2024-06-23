@@ -1,18 +1,9 @@
-//
-// Created by jeanne on 08/06/24.
-//
+#ifndef PLANTAMIZ_PLATEAU_H
+#define PLANTAMIZ_PLATEAU_H
 
-#ifndef PLANTAMIZ_PLANTAMIZ_H
-#define PLANTAMIZ_PLANTAMIZ_H
 
-#endif //PLANTAMIZ_PLANTAMIZ_H
-#define LARGEUR 40
-#define HAUTEUR 25
+#include "plantamiz.h"
 
-typedef struct position{
-int ligne;
-int colonne;
-} position;
 
 typedef struct combinaison{
     int elimination[LARGEUR][HAUTEUR];
@@ -26,3 +17,4 @@ typedef struct combinaison{
 combinaison* evaluation(char tab[LARGEUR][HAUTEUR]);
 void affichage(char tab[LARGEUR][HAUTEUR], combinaison *resultat);
 void lecturetest(char tab[LARGEUR][HAUTEUR]);
+#endif //PLANTAMIZ_PLATEAU_H
