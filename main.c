@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "plateau.h"
+#include "evaluation.h"
 
-
-void lecturetest(char tab[LARGEUR][HAUTEUR]){
+void lecturetest(plateau *ptab){
     char *texte = NULL;
     long longueur = 0;
     FILE *f=fopen("test", "r");
@@ -21,23 +20,23 @@ void lecturetest(char tab[LARGEUR][HAUTEUR]){
             switch(symbole) {
                 case 'S':
                 case 's':
-                    tab[colonne][ligne] = 'S';
+                    *ptab[colonne][ligne] = 'S';
                     break;
                 case 'F':
                 case 'f':
-                    tab[colonne][ligne] = 'F';
+                    *ptab[colonne][ligne] = 'F';
                     break;
                 case 'O':
                 case 'o':
-                    tab[colonne][ligne] = 'O';
+                    *ptab[colonne][ligne] = 'O';
                     break;
                 case 'P':
                 case 'p':
-                    tab[colonne][ligne] = 'P';
+                    *ptab[colonne][ligne] = 'P';
                     break;
                 case 'M':
                 case 'm':
-                    tab[colonne][ligne] = 'M';
+                    *ptab[colonne][ligne] = 'M';
                     break;
                 default:
                   printf("symbole inconnu ligne %d colonne %d : '%c'\n", ligne, colonne, symbole);
@@ -49,7 +48,7 @@ void lecturetest(char tab[LARGEUR][HAUTEUR]){
     fclose(f);
 }
 
-void affichage(char tab[LARGEUR][HAUTEUR], combinaison *resultat){
+void affichage(plateau *ptab, combinaison *resultat){
     printf("résultat de l'évaluation :\n");
     if(resultat) {
         printf("%d points soleils\n", resultat->nb_soleils);
@@ -66,7 +65,7 @@ void affichage(char tab[LARGEUR][HAUTEUR], combinaison *resultat){
             if(resultat && resultat->elimination[colonne][ligne]) {
                 printf(".");
             } else {
-                printf("%c",tab[colonne][ligne]);
+                printf("%c",*ptab[colonne][ligne]);
             }
         }
         printf("\n");
@@ -78,9 +77,9 @@ int main(void) {
     char tab[LARGEUR][HAUTEUR];
     combinaison *resultat;
 
-    lecturetest(tab);
-    resultat = evaluation(tab);
-    affichage(tab, resultat);
+    lecturetest(&tab);
+    resultat = evaluation(&tab);
+    affichage(&tab, resultat);
 
     return 0;
 }

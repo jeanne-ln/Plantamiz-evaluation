@@ -6,6 +6,8 @@
 //avec dans chaque case 'F' ou 'P' ou 'O' ou 'S' ou 'M' (en majuscule)
 //char tab[LARGEUR][HAUTEUR];
 
+typedef char plateau[LARGEUR][HAUTEUR];
+
 typedef struct position{
     int ligne;
     int colonne;
