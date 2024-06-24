@@ -24,7 +24,7 @@ plateau* premier_plateau(){
     }
     for (int ligne = 0; ligne < HAUTEUR; ligne++) {
         for (int colonne = 0; colonne < LARGEUR; colonne++) {
-            *ptab[colonne][ligne]=nouvel_element();
+            (*ptab)[colonne][ligne]=nouvel_element();
         }
     }
     combinaison* resultat = evaluation(ptab);
@@ -34,7 +34,7 @@ plateau* premier_plateau(){
         encore_des_trous=0;
         for (int ligne = 0; ligne < HAUTEUR; ligne++) {
             for (int colonne = 0; colonne < LARGEUR; colonne++) {
-                if (*ptab[colonne][ligne] == ' ') {
+                if ((*ptab)[colonne][ligne] == ' ') {
                     encore_des_trous=1;
                     position trou;
                     trou.ligne = ligne;
