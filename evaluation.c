@@ -50,16 +50,16 @@ void MAJ_score(char symbole, int score){
 void motif_horizontal(plateau* ptab){
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;){
-            char symbole=*ptab[colonne][ligne];
+            char symbole=(*ptab)[colonne][ligne];
             int longueur=1;
             int score=0;
-            while (colonne++<LARGEUR-1 && *ptab[colonne][ligne] == symbole) {
+            while (colonne++<LARGEUR-1 && (*ptab)[colonne][ligne] == symbole) {
                 longueur++;
             }
             if (longueur >= 6) {
                 for(int i=0;i<HAUTEUR;i++){
                     for(int j=0;j<LARGEUR;j++){
-                        if(*ptab[j][i]==symbole){
+                        if((*ptab)[j][i]==symbole){
                             score++;
                             resultat.elimination[j][i]=1;
                         }
@@ -79,16 +79,16 @@ void motif_horizontal(plateau* ptab){
 void motif_vertical(plateau* ptab){
     for(int colonne=0;colonne<LARGEUR;colonne++){
         for(int ligne=0;ligne<HAUTEUR;){
-            char symbole=*ptab[colonne][ligne];
+            char symbole=(*ptab)[colonne][ligne];
             int longueur=1;
             int score=0;
-            while (ligne++<HAUTEUR-1 && *ptab[colonne][ligne] == symbole) {
+            while (ligne++<HAUTEUR-1 && (*ptab)[colonne][ligne] == symbole) {
                 longueur++;
             }
             if (longueur >= 6) {
                 for(int i=0;i<HAUTEUR;i++){
                      for(int j=0;j<LARGEUR;j++){
-                        if(*ptab[j][i]==symbole){
+                        if((*ptab)[j][i]==symbole){
                             score++;
                             resultat.elimination[j][i]=1;
                         }
@@ -106,36 +106,36 @@ void motif_vertical(plateau* ptab){
 }
 
 int haut(plateau* ptab, int colonne,int ligne){
-    char symbole=*ptab[colonne][ligne];
+    char symbole=(*ptab)[colonne][ligne];
     int longueur=1;
-    while (ligne-->0 && *ptab[colonne][ligne] == symbole) {
+    while (ligne-->0 && (*ptab)[colonne][ligne] == symbole) {
         longueur++;
     }
     return longueur;
 }
 
 int bas(plateau* ptab, int colonne,int ligne){
-    char symbole=*ptab[colonne][ligne];
+    char symbole=(*ptab)[colonne][ligne];
     int longueur=1;
-    while (ligne++<HAUTEUR-1 && *ptab[colonne][ligne] == symbole) {
+    while (ligne++<HAUTEUR-1 && (*ptab)[colonne][ligne] == symbole) {
         longueur++;
     }
     return longueur;
 }
 
 int gauche(plateau* ptab, int colonne,int ligne){
-    char symbole=*ptab[colonne][ligne];
+    char symbole=(*ptab)[colonne][ligne];
     int longueur=1;
-    while (colonne-->0 && *ptab[colonne][ligne] == symbole) {
+    while (colonne-->0 && (*ptab)[colonne][ligne] == symbole) {
         longueur++;
     }
     return longueur;
 }
 
 int droite(plateau* ptab, int colonne,int ligne){
-    char symbole=*ptab[colonne][ligne];
+    char symbole=(*ptab)[colonne][ligne];
     int longueur=1;
-    while (colonne++<LARGEUR-1 && *ptab[colonne][ligne] == symbole) {
+    while (colonne++<LARGEUR-1 && (*ptab)[colonne][ligne] == symbole) {
         longueur++;
     }
     return longueur;
@@ -172,7 +172,7 @@ void motif_h(plateau* ptab){
                     resultat.elimination[c][ligne]=1;
                 }
                 int score=2*(2*hauteur+largeur-2);
-                char symbole=*ptab[colonne][ligne];
+                char symbole=(*ptab)[colonne][ligne];
                 MAJ_score(symbole,score);
             }
         }
@@ -208,7 +208,7 @@ void motif_rect(plateau* ptab){
                         resultat.elimination[col][ligne+hauteur-1]=1;
                     }
                     int score=2*hauteur*largeur;
-                    char symbole=*ptab[colonne][ligne];
+                    char symbole=(*ptab)[colonne][ligne];
                     MAJ_score(symbole,score);
                 }
             }

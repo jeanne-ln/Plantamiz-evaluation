@@ -20,23 +20,23 @@ void lecturetest(plateau *ptab){
             switch(symbole) {
                 case 'S':
                 case 's':
-                    *ptab[colonne][ligne] = 'S';
+                    (*ptab)[colonne][ligne] = 'S';
                     break;
                 case 'F':
                 case 'f':
-                    *ptab[colonne][ligne] = 'F';
+                    (*ptab)[colonne][ligne] = 'F';
                     break;
                 case 'O':
                 case 'o':
-                    *ptab[colonne][ligne] = 'O';
+                    (*ptab)[colonne][ligne] = 'O';
                     break;
                 case 'P':
                 case 'p':
-                    *ptab[colonne][ligne] = 'P';
+                    (*ptab)[colonne][ligne] = 'P';
                     break;
                 case 'M':
                 case 'm':
-                    *ptab[colonne][ligne] = 'M';
+                    (*ptab)[colonne][ligne] = 'M';
                     break;
                 default:
                   printf("symbole inconnu ligne %d colonne %d : '%c'\n", ligne, colonne, symbole);
@@ -65,7 +65,7 @@ void affichage(plateau *ptab, combinaison *resultat){
             if(resultat && resultat->elimination[colonne][ligne]) {
                 printf(".");
             } else {
-                printf("%c",*ptab[colonne][ligne]);
+                printf("%c",(*ptab)[colonne][ligne]);
             }
         }
         printf("\n");
