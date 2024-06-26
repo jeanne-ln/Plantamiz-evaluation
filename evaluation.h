@@ -5,17 +5,16 @@
 #include "plantamiz.h"
 
 
-typedef struct combinaison{
-    int elimination[LARGEUR][HAUTEUR];
+typedef struct score{
     int nb_soleils;
     int nb_fraises;
     int nb_oignons;
     int nb_pommes;
     int nb_mandarine;
-} combinaison;
+} score;
 
-combinaison* evaluation(plateau* ptab);
+score* evaluation(plateau* ptab);
 
-void affichage(plateau* ptab, combinaison *resultat);
+void affichage(plateau* ptab, score *resultat);
 void lecturetest(plateau* ptab);
 #endif //PLANTAMIZ_EVALUATION_H

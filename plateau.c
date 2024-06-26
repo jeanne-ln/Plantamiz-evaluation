@@ -27,8 +27,7 @@ plateau* premier_plateau(){
             (*ptab)[colonne][ligne]=nouvel_element();
         }
     }
-    combinaison* resultat = evaluation(ptab);
-    disparition(ptab, resultat->elimination);
+    score* resultat = evaluation(ptab);
     int encore_des_trous;
     do {
         encore_des_trous=0;
@@ -48,15 +47,6 @@ plateau* premier_plateau(){
     return ptab;
 }
 
-void disparition(plateau* ptab, int trous[LARGEUR][HAUTEUR]){
-    for (int ligne = 0; ligne < HAUTEUR; ligne++) {
-        for (int colonne = 0; colonne < LARGEUR; colonne++) {
-            if(trous[colonne][ligne]==1){
-                (*ptab)[colonne][ligne]=' ';
-            }
-        }
-    }
-}
 
 void echange(plateau* ptab, position* A, position* B){
     char symbole = (*ptab)[A->colonne][A->ligne];
@@ -65,6 +55,10 @@ void echange(plateau* ptab, position* A, position* B){
 }
 
 void chute(plateau* ptab, position* trou, char element){
-
+    int colonne=trou->colonne;
+    for(int ligne=trou->ligne;ligne>0;ligne--){
+        (*ptab)[colonne][ligne]=(*ptab)[colonne][ligne-1];
+    }
+    (*ptab)[colonne][0]=element;
 }
 

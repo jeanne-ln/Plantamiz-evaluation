@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "evaluation.h"
 
-void motif_horizontal(plateau* ptab);
-void motif_vertical(plateau* ptab);
-void motif_h(plateau* ptab);
-void motif_rect(plateau* ptab);
+void motif_horizontal(plateau* ptab,int trous[LARGEUR][HAUTEUR]);
+void motif_vertical(plateau* ptab, int trous[LARGEUR][HAUTEUR]);
+void motif_h(plateau* ptab, int trous[LARGEUR][HAUTEUR]);
+void motif_rect(plateau* ptab, int trous[LARGEUR][HAUTEUR]);
 void MAJ_score(char symbole, int score);
 int haut(plateau* ptab, int colonne,int ligne);
 int bas(plateau* ptab, int colonne,int ligne);
@@ -13,13 +13,13 @@ int gauche(plateau* ptab, int colonne,int ligne);
 int droite(plateau* ptab, int colonne,int ligne);
 
 
-combinaison resultat;
+score resultat;
 
-combinaison* evaluation(plateau* ptab) {
-
+score* evaluation(plateau* ptab) {
+    int trous[LARGEUR][HAUTEUR];
     for (int ligne = 0; ligne < HAUTEUR; ligne++) {
         for (int colonne = 0; colonne < LARGEUR; colonne++) {
-            resultat.elimination[colonne][ligne] = 0;
+            trous[colonne][ligne] = 0;
         }
     }
     resultat.nb_soleils = 0;
@@ -27,10 +27,17 @@ combinaison* evaluation(plateau* ptab) {
     resultat.nb_mandarine = 0;
     resultat.nb_oignons = 0;
     resultat.nb_pommes = 0;
-    motif_horizontal(ptab);
-    motif_vertical(ptab);
-    motif_h(ptab);
-    motif_rect(ptab);
+    motif_horizontal(ptab, trous);
+    motif_vertical(ptab, trous);
+    motif_h(ptab, trous);
+    motif_rect(ptab, trous);
+    for (int ligne = 0; ligne < HAUTEUR; ligne++) {
+        for (int colonne = 0; colonne < LARGEUR; colonne++) {
+            if(trous[colonne][ligne]){
+                (*ptab)[colonne][ligne]=' ';
+            }
+        }
+    }
     if(resultat.nb_soleils +resultat.nb_fraises + resultat.nb_mandarine + resultat.nb_oignons + resultat.nb_pommes){
         return &resultat;
     }
@@ -47,7 +54,7 @@ void MAJ_score(char symbole, int score){
     }
 }
 
-void motif_horizontal(plateau* ptab){
+void motif_horizontal(plateau* ptab, int trous[LARGEUR][HAUTEUR]){
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;){
             char symbole=(*ptab)[colonne][ligne];
@@ -61,14 +68,14 @@ void motif_horizontal(plateau* ptab){
                     for(int j=0;j<LARGEUR;j++){
                         if((*ptab)[j][i]==symbole){
                             score++;
-                            resultat.elimination[j][i]=1;
+                            trous[j][i]=1;
                         }
                     }
                 }
             }else if(longueur>=3) {
                 score=longueur;
                 for (int j = colonne-longueur; j<colonne; j++){
-                    resultat.elimination[j][ligne] = 1;
+                    trous[j][ligne] = 1;
                 }
             }
             MAJ_score(symbole,score);
@@ -76,7 +83,7 @@ void motif_horizontal(plateau* ptab){
     }
 }
 
-void motif_vertical(plateau* ptab){
+void motif_vertical(plateau* ptab, int trous[LARGEUR][HAUTEUR]){
     for(int colonne=0;colonne<LARGEUR;colonne++){
         for(int ligne=0;ligne<HAUTEUR;){
             char symbole=(*ptab)[colonne][ligne];
@@ -90,14 +97,14 @@ void motif_vertical(plateau* ptab){
                      for(int j=0;j<LARGEUR;j++){
                         if((*ptab)[j][i]==symbole){
                             score++;
-                            resultat.elimination[j][i]=1;
+                            trous[j][i]=1;
                         }
                     }
                 }
             }else if(longueur>=3) {
                 score=longueur;
                 for (int i = ligne-longueur; i<ligne; i++){
-                    resultat.elimination[colonne][i] = 1;
+                    trous[colonne][i] = 1;
                 }
             }
             MAJ_score(symbole,score);
@@ -146,7 +153,7 @@ int min(int x, int y){
     else return x;
 }
 
-void motif_h(plateau* ptab){
+void motif_h(plateau* ptab, int trous[LARGEUR][HAUTEUR]){
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;colonne++){
             int hauteurmax=min(haut(ptab,colonne,ligne),bas(ptab,colonne,ligne));
@@ -165,11 +172,11 @@ void motif_h(plateau* ptab){
                 //on a trouvé un H !
                 int hauteur=min(hauteurmax,hauteur_droite)*2-1;
                 for(int l=ligne-(hauteur-1)/2;l<=ligne+(hauteur-1)/2;l++){
-                    resultat.elimination[colonne][l]=1;
-                    resultat.elimination[colonne+largeur-1][l]=1;
+                    trous[colonne][l]=1;
+                    trous[colonne+largeur-1][l]=1;
                 }
                 for(int c=colonne;c<=colonne+largeur-1;c++){
-                    resultat.elimination[c][ligne]=1;
+                    trous[c][ligne]=1;
                 }
                 int score=2*(2*hauteur+largeur-2);
                 char symbole=(*ptab)[colonne][ligne];
@@ -180,7 +187,7 @@ void motif_h(plateau* ptab){
 }
 
 
-void motif_rect(plateau* ptab){
+void motif_rect(plateau* ptab, int trous[LARGEUR][HAUTEUR]){
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;colonne++){
             int hauteur_max=bas(ptab, colonne,ligne);
@@ -200,12 +207,12 @@ void motif_rect(plateau* ptab){
                     }
                     //on a un rectangle !!
                     for(int lig=ligne;lig<=ligne+hauteur-1;lig++){
-                        resultat.elimination[colonne][lig]=1;
-                        resultat.elimination[colonne+largeur-1][lig]=1;
+                        trous[colonne][lig]=1;
+                        trous[colonne+largeur-1][lig]=1;
                     }
                     for(int col=colonne;col<=colonne+largeur-1;col++){
-                        resultat.elimination[col][ligne]=1;
-                        resultat.elimination[col][ligne+hauteur-1]=1;
+                        trous[col][ligne]=1;
+                        trous[col][ligne+hauteur-1]=1;
                     }
                     int score=2*hauteur*largeur;
                     char symbole=(*ptab)[colonne][ligne];

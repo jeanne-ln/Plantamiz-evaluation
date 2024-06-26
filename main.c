@@ -49,7 +49,7 @@ void lecturetest(plateau *ptab){
     fclose(f);
 }
 
-void affichage(plateau *ptab, combinaison *resultat){
+void affichage(plateau *ptab, score *resultat){
     printf("résultat de l'évaluation :\n");
     if(resultat) {
         printf("%d points soleils\n", resultat->nb_soleils);
@@ -63,11 +63,7 @@ void affichage(plateau *ptab, combinaison *resultat){
     printf("\n");
     for(int ligne=0;ligne<HAUTEUR;ligne++){
         for(int colonne=0;colonne<LARGEUR;colonne++){
-            if(resultat && resultat->elimination[colonne][ligne]) {
-                printf(".");
-            } else {
                 printf("%c",(*ptab)[colonne][ligne]);
-            }
         }
         printf("\n");
     }
@@ -76,7 +72,7 @@ void affichage(plateau *ptab, combinaison *resultat){
 
 int main(void) {
     char tab[LARGEUR][HAUTEUR];
-    combinaison *resultat;
+    score *resultat;
 
     lecturetest(&tab);
     resultat = evaluation(&tab);
