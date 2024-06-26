@@ -3,7 +3,7 @@
 
 #include "plantamiz.h"
 
-plateau* premier_plateau();
+plateau* nouveau_plateau();
 void echange(plateau* ptab, position* A, position* B);
 void chute(plateau* ptab, position* trou, char element);
 

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "plateau.h"
 #include "evaluation.h"
-
+#include <time.h>
 
 
 char nouvel_element(){
@@ -16,7 +16,8 @@ char nouvel_element(){
     }
 }
 
-plateau* premier_plateau(){
+plateau* nouveau_plateau(){
+    srand(time(0));
     plateau *ptab=malloc(sizeof(plateau));
     if(!ptab){
         printf("impossible d'allouer un plateau\n");
@@ -27,23 +28,26 @@ plateau* premier_plateau(){
             (*ptab)[colonne][ligne]=nouvel_element();
         }
     }
-    score* resultat = evaluation(ptab);
-    int encore_des_trous;
-    do {
-        encore_des_trous=0;
-        for (int ligne = 0; ligne < HAUTEUR; ligne++) {
-            for (int colonne = 0; colonne < LARGEUR; colonne++) {
-                if ((*ptab)[colonne][ligne] == ' ') {
-                    encore_des_trous=1;
-                    position trou;
-                    trou.ligne = ligne;
-                    trou.colonne = colonne;
-                    char element = nouvel_element();
-                    chute(ptab, &trou, element);
+    while(1) {
+        score *resultat = evaluation(ptab);
+        if(!resultat) break;
+        int encore_des_trous;
+        do {
+            encore_des_trous = 0;
+            for (int ligne = 0; ligne < HAUTEUR; ligne++) {
+                for (int colonne = 0; colonne < LARGEUR; colonne++) {
+                    if ((*ptab)[colonne][ligne] == ' ') {
+                        encore_des_trous = 1;
+                        position trou;
+                        trou.ligne = ligne;
+                        trou.colonne = colonne;
+                        char element = nouvel_element();
+                        chute(ptab, &trou, element);
+                    }
                 }
             }
-        }
-    }while(encore_des_trous);
+        } while (encore_des_trous);
+    }
     return ptab;
 }
 

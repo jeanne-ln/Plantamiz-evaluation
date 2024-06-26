@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "plantamiz.h"
 #include "evaluation.h"
-
+#include "plateau.h"
 void lecturetest(plateau *ptab){
     char *texte = NULL;
     long longueur = 0;
@@ -71,12 +71,14 @@ void affichage(plateau *ptab, score *resultat){
 
 
 int main(void) {
-    char tab[LARGEUR][HAUTEUR];
-    score *resultat;
 
-    lecturetest(&tab);
-    resultat = evaluation(&tab);
-    affichage(&tab, resultat);
+    score *resultat=0;
+
+    plateau *ptab=nouveau_plateau();
+    //resultat = evaluation(ptab);
+    affichage(ptab, resultat);
+    resultat = evaluation(ptab);
+    affichage(ptab, resultat);
 
     return 0;
 }
