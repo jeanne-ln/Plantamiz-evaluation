@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "plantamiz.h"
 #include "evaluation.h"
 
 void lecturetest(plateau *ptab){
