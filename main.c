@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <allegro.h>
 #include "plantamiz.h"
 #include "evaluation.h"
 #include "plateau.h"
+#include "affichage.h"
+
 void lecturetest(plateau *ptab){
     char *texte = NULL;
     long longueur = 0;
@@ -71,14 +74,19 @@ void affichage(plateau *ptab, score *resultat){
 
 
 int main(void) {
-
+// Initialisation d'Allegro
+    allegro_init();
+    install_keyboard();
+    set_color_depth(32);
+    set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
     score *resultat=0;
 
     plateau *ptab=nouveau_plateau();
     //resultat = evaluation(ptab);
-    affichage(ptab, resultat);
-    resultat = evaluation(ptab);
-    affichage(ptab, resultat);
+    affiche(ptab);
+    // Attendre une touche pour fermer
+    readkey();
+    allegro_exit();
 
     return 0;
 }
