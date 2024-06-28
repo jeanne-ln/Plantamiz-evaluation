@@ -80,13 +80,27 @@ int main(void) {
     set_color_depth(32);
     set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
     score *resultat=0;
-
+    position* selection;
     plateau *ptab=nouveau_plateau();
     //resultat = evaluation(ptab);
-    affiche(ptab);
-    // Attendre une touche pour fermer
-    readkey();
-    allegro_exit();
-
+    affiche(ptab,  selection);
+    position curseur;
+    position select;
+    select.ligne=20;
+    select.colonne=14;
+    curseur.ligne=20;
+    curseur.colonne=13;
+    int bool=0;
+    while(!key[KEY_ESC]) {
+        affiche_curseur(curseur, bool);
+        readkey();
+        bool=!bool;
+        if(bool==0) {
+            affiche_selection(*ptab,select);
+        }
+        if(bool==1){
+            efface_selection(*ptab, select);
+        }
+    }
     return 0;
-}
+}END_OF_MAIN()
