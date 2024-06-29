@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "jeux.h"
 #include "plateau.h"
+#include "affichage.h"
 #define BOARD_ROWS 25
 #define BOARD_COLS 45
 #define MAX_MOVES 30
@@ -35,6 +36,13 @@ Partie* nouvelle_partie(){
     return partie;
 }
 void jouer(Partie* partie){
+    position curseur;
+    curseur.colonne=0;
+    curseur.ligne=0;
+    affiche(&partie->tab,NULL, &curseur);
+    while(!key[KEY_ESC]){
+
+    }
 
 }
 /*

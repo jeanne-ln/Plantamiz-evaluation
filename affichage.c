@@ -5,8 +5,10 @@
 #define HAUTEUR 25
 #define TILE_SIZE 20
 
+void affiche_curseur(position *curseur, int is_selected);
+void affiche_selection(plateau *ptab,position selection);
 
-void affiche(plateau *ptab, position* selection) {
+void affiche(plateau *ptab, position* selection, position* curseur) {
 
     // Définir les couleurs pour chaque lettre
     int colors[256];
@@ -22,26 +24,28 @@ void affiche(plateau *ptab, position* selection) {
         for (int colonne = 0; colonne < LARGEUR; colonne++) {
             char c = (*ptab)[colonne][ligne];
             int color = colors[c];
-            textprintf_ex(screen, font, colonne * 20, ligne * 20, color, -1, "%c", c);
+            textprintf_ex(screen, font, colonne * 20+10, ligne * 20+10, color, -1, "%c", c);
         }
     }
-
+    if(curseur) {
+        affiche_curseur(curseur, 1);
+    }
 }
 
 
-void affiche_curseur(position curseur, int is_selected){
+void affiche_curseur(position* curseur, int is_selected){
     // Déterminer la couleur du curseur
-    int cursor_color = is_selected ? makecol(0, 0, 0) : makecol(255, 255, 255);
+    int cursor_color = is_selected ? makecol(255, 255, 255) : makecol(0, 0,0);
 
     // Afficher le curseur autour de la lettre spécifiée
-    rect(screen, curseur.colonne * TILE_SIZE - 6 , curseur.ligne * TILE_SIZE  - 8,
-         curseur.colonne * TILE_SIZE + TILE_SIZE - 8, curseur.ligne * TILE_SIZE + TILE_SIZE -6,
+    rect(screen, curseur->colonne * TILE_SIZE - 6+10 , curseur->ligne * TILE_SIZE  - 8+10,
+         curseur->colonne * TILE_SIZE + TILE_SIZE - 8+10, curseur->ligne * TILE_SIZE + TILE_SIZE -6+10,
          cursor_color);
-    rect(screen, curseur.colonne * TILE_SIZE - 5 , curseur.ligne * TILE_SIZE  - 7,
-         curseur.colonne * TILE_SIZE + TILE_SIZE - 9, curseur.ligne * TILE_SIZE + TILE_SIZE -7,
+    rect(screen, curseur->colonne * TILE_SIZE - 5+10 , curseur->ligne * TILE_SIZE  - 7+10,
+         curseur->colonne * TILE_SIZE + TILE_SIZE - 9+10, curseur->ligne * TILE_SIZE + TILE_SIZE -7+10,
          cursor_color);
-    rect(screen, curseur.colonne * TILE_SIZE - 4 , curseur.ligne * TILE_SIZE  - 6,
-         curseur.colonne * TILE_SIZE + TILE_SIZE - 10, curseur.ligne * TILE_SIZE + TILE_SIZE -8,
+    rect(screen, curseur->colonne * TILE_SIZE - 4 +10, curseur->ligne * TILE_SIZE  - 6+10,
+         curseur->colonne * TILE_SIZE + TILE_SIZE - 10+10, curseur->ligne * TILE_SIZE + TILE_SIZE -8+10,
          cursor_color);
 
 }
