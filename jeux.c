@@ -10,6 +10,8 @@
 #define INITIAL_LIVES 5
 #define NOMBRE_CONTRATS 3
 
+void mise_a_jour_score(score* delta_score,Partie *partie);
+
 const Contrat tab_contrats[NOMBRE_CONTRATS] = {
         {{10,10,10,10,10}, 100, 300},
         {{30,30,30,30,30}, 50, 250},
@@ -88,6 +90,7 @@ void jouer(Partie* partie){
                 echange(&partie->tab, &precedent, &curseur);
                 score* delta_score=evaluation(&partie->tab);
                 if(delta_score){
+                    mise_a_jour_score(delta_score,partie);
                     affiche(&partie->tab,selection, &curseur);
 
                     while(1) {
@@ -96,18 +99,35 @@ void jouer(Partie* partie){
                         delta_score = evaluation(&partie->tab);
                         affiche(&partie->tab,selection, &curseur);
                         if(!delta_score) break;
+                        mise_a_jour_score(delta_score,partie);
                     }
+
+                    printf("\n\n");
+                    printf("score mandarine:%d\n", partie->points.nb_mandarine);
+                    printf("score fraise:%d\n", partie->points.nb_fraises);
+                    printf("score soleil:%d\n", partie->points.nb_soleils);
+                    printf("score oignons:%d\n", partie->points.nb_oignons);
+                    printf("score pomme:%d\n", partie->points.nb_pommes);
+
 
                 }
 
             }
             affiche(&partie->tab,selection, &curseur);
-
         }
 
     }
 
 }
+
+void mise_a_jour_score(score* delta_score,Partie *partie){
+    partie->points.nb_mandarine+=delta_score->nb_mandarine;
+    partie->points.nb_fraises+=delta_score->nb_fraises;
+    partie->points.nb_soleils+=delta_score->nb_soleils;
+    partie->points.nb_oignons+=delta_score->nb_oignons;
+    partie->points.nb_pommes+=delta_score->nb_pommes;
+}
+
 /*
 void affichage(plateau* ptab, score *resultat);
 void lecturetest(plateau* ptab);
