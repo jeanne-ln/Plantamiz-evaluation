@@ -9,6 +9,5 @@
 
 score* evaluation(plateau* ptab);
 
-void affichage(plateau* ptab, score *resultat);
-void lecturetest(plateau* ptab);
+
 #endif //PLANTAMIZ_EVALUATION_H

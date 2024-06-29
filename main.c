@@ -34,6 +34,18 @@ void dessiner_menu(OptionMenu *options_menu, int selection) {
     }
 }
 
+void demarrer_nouvelle_partie(){
+    Partie* partie;
+    partie=nouvelle_partie();
+    jouer(partie);
+}
+
+void partie_sauvegarde(){
+    Partie* partie;
+    partie=charger_partie();
+    jouer(partie);
+}
+
 // Fonction principale du jeu
 int main(void) {
     allegro_init();
@@ -43,7 +55,7 @@ int main(void) {
 
     OptionMenu options_menu[NOMBRE_OPTIONS_MENU] = {
             {"Nouvelle partie", demarrer_nouvelle_partie},
-            {"Charger une partie", charger_partie},
+            {"Charger une partie", partie_sauvegarde},
             {"Quitter", quitter}
     };
 

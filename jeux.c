@@ -1,11 +1,45 @@
 #include <time.h>
 #include <stdio.h>
 #include "jeux.h"
+#include "plateau.h"
 #define BOARD_ROWS 25
 #define BOARD_COLS 45
 #define MAX_MOVES 30
 #define INITIAL_LIVES 5
+#define NOMBRE_CONTRATS 3
 
+const Contrat tab_contrats[NOMBRE_CONTRATS] = {
+        {{10,10,10,10,10}, 100, 300},
+        {{30,30,30,30,30}, 50, 250},
+        {{40,40,40,40,40}, 40, 200}
+};
+
+
+Partie* nouvelle_partie(){
+    Partie* partie;
+    partie=(Partie*)malloc(sizeof(Partie));
+    if(!partie){
+        printf("impossible d'allouer une partie\n");
+        exit(1);
+    }
+    partie->points.nb_pommes=0;
+    partie->points.nb_soleils=0;
+    partie->points.nb_oignons=0;
+    partie->points.nb_fraises=0;
+    partie->points.nb_mandarine=0;
+    partie->niveau=0;
+    partie->nb_coup_restant = tab_contrats[partie->niveau].nb_coups;
+    partie->temps_restant = tab_contrats[partie->niveau].temps;
+    initialise_plateau(&partie->tab);
+
+    return partie;
+}
+void jouer(Partie* partie){
+
+}
+/*
+void affichage(plateau* ptab, score *resultat);
+void lecturetest(plateau* ptab);
 void demarrer_nouvelle_partie(){
 
 }
@@ -148,3 +182,4 @@ int process_move(char board[BOARD_ROWS][BOARD_COLS], int r1, int c1, int r2, int
         }
     }
 }
+*/

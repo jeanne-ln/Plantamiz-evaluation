@@ -16,13 +16,8 @@ char nouvel_element(){
     }
 }
 
-plateau* nouveau_plateau(){
+void initialise_plateau(plateau* ptab){
     srand(time(0));
-    plateau *ptab=malloc(sizeof(plateau));
-    if(!ptab){
-        printf("impossible d'allouer un plateau\n");
-        exit(1);
-    }
     for (int ligne = 0; ligne < HAUTEUR; ligne++) {
         for (int colonne = 0; colonne < LARGEUR; colonne++) {
             (*ptab)[colonne][ligne]=nouvel_element();
@@ -48,7 +43,6 @@ plateau* nouveau_plateau(){
             }
         } while (encore_des_trous);
     }
-    return ptab;
 }
 
 

@@ -22,7 +22,19 @@ typedef struct score{
     int nb_mandarine;
 } score;
 
+typedef struct {
+    int niveau;
+    score points;
+    plateau tab;
+    int nb_coup_restant;
+    int temps_restant;
+} Partie;
 
+typedef struct {
+    score contrat;
+    int nb_coups;
+    int temps;
+}Contrat;
 
 
 #endif //PLANTAMIZ_PLANTAMIZ_H
