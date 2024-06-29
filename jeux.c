@@ -37,9 +37,12 @@ Partie* nouvelle_partie(){
 }
 void jouer(Partie* partie){
     position curseur;
+    position selection;
     curseur.colonne=0;
     curseur.ligne=0;
-    affiche(&partie->tab,NULL, &curseur);
+    selection.colonne=1;
+    selection.ligne=1;
+    affiche(&partie->tab,&selection, &curseur);
     while(!key[KEY_ESC]){
 
     }
