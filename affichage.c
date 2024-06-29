@@ -8,7 +8,7 @@
 void affiche_curseur(position *curseur, int is_selected);
 void affiche_selection(plateau *ptab,position* selection);
 
-void affiche(plateau *ptab, position* selection, position* curseur) {
+void affiche(plateau *ptab, int selection, position* curseur) {
 
     // Définir les couleurs pour chaque lettre
     int colors[256];
@@ -17,6 +17,7 @@ void affiche(plateau *ptab, position* selection, position* curseur) {
     colors['P'] = makecol(0, 255, 0); // Vert pour "Pomme"
     colors['O'] = makecol(255, 165, 0); // Orange pour "Oignon"
     colors['M'] = makecol(255, 140, 0); // Mandarine
+    colors[' '] = makecol(0,0,0);//trous
     // Effacer l'écran
     clear_to_color(screen, makecol(0, 0, 0));
     // Afficher le tableau avec les couleurs
@@ -31,7 +32,7 @@ void affiche(plateau *ptab, position* selection, position* curseur) {
         affiche_curseur(curseur, 1);
     }
     if(selection){
-        affiche_selection(ptab, selection);
+        affiche_selection(ptab, curseur);
     }
 }
 

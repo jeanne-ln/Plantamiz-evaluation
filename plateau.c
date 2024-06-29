@@ -26,6 +26,11 @@ void initialise_plateau(plateau* ptab){
     while(1) {
         score *resultat = evaluation(ptab);
         if(!resultat) break;
+        bouche_les_trous(ptab);
+    }
+}
+
+void bouche_les_trous(plateau* ptab){
         int encore_des_trous;
         do {
             encore_des_trous = 0;
@@ -42,9 +47,7 @@ void initialise_plateau(plateau* ptab){
                 }
             }
         } while (encore_des_trous);
-    }
 }
-
 
 void echange(plateau* ptab, position* A, position* B){
     char symbole = (*ptab)[A->colonne][A->ligne];

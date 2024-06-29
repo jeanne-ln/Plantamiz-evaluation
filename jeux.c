@@ -3,6 +3,7 @@
 #include "jeux.h"
 #include "plateau.h"
 #include "affichage.h"
+#include "evaluation.h"
 #define BOARD_ROWS 25
 #define BOARD_COLS 45
 #define MAX_MOVES 30
@@ -37,18 +38,20 @@ Partie* nouvelle_partie(){
 }
 void jouer(Partie* partie){
     position curseur;
-    position selection;
+    int selection=0;
     curseur.colonne=0;
     curseur.ligne=0;
-    selection.colonne=1;
-    selection.ligne=1;
-    affiche(&partie->tab,&selection, &curseur);
+    affiche(&partie->tab,selection, &curseur);
     while(1){
         if (keypressed()) {
+            position precedent;
+            precedent.colonne=curseur.colonne;
+            precedent.ligne=curseur.ligne;
             int touche = readkey() >> 8;
             if (touche == KEY_UP) {
                 if (curseur.ligne == 0) {
                     curseur.ligne = HAUTEUR - 1;
+                    selection=0;
                 }else{
                     curseur.ligne--;
                 }
@@ -56,6 +59,7 @@ void jouer(Partie* partie){
             if (touche == KEY_DOWN) {
                 if (curseur.ligne == HAUTEUR-1) {
                     curseur.ligne = 0;
+                    selection=0;
                 }else{
                     curseur.ligne++;
                 }
@@ -63,6 +67,7 @@ void jouer(Partie* partie){
             if (touche == KEY_RIGHT) {
                 if (curseur.colonne == LARGEUR-1) {
                     curseur.colonne = 0;
+                    selection=0;
                 }else{
                     curseur.colonne++;
                 }
@@ -70,11 +75,33 @@ void jouer(Partie* partie){
             if (touche == KEY_LEFT) {
                 if (curseur.colonne == 0) {
                     curseur.colonne = LARGEUR-1;
+                    selection=0;
                 }else{
                     curseur.colonne--;
                 }
             }
-            affiche(&partie->tab,&selection, &curseur);
+            if(touche== KEY_SPACE){
+                selection=1-selection;
+            }
+            if(selection && (touche==KEY_DOWN || touche==KEY_UP || touche==KEY_LEFT || touche==KEY_RIGHT)){
+                selection=0;
+                echange(&partie->tab, &precedent, &curseur);
+                score* delta_score=evaluation(&partie->tab);
+                if(delta_score){
+                    affiche(&partie->tab,selection, &curseur);
+
+                    while(1) {
+                        while(!key[KEY_ENTER_PAD]){}
+                        bouche_les_trous(&partie->tab);
+                        delta_score = evaluation(&partie->tab);
+                        affiche(&partie->tab,selection, &curseur);
+                        if(!delta_score) break;
+                    }
+
+                }
+
+            }
+            affiche(&partie->tab,selection, &curseur);
 
         }
 
