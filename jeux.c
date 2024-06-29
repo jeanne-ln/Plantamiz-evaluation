@@ -43,7 +43,40 @@ void jouer(Partie* partie){
     selection.colonne=1;
     selection.ligne=1;
     affiche(&partie->tab,&selection, &curseur);
-    while(!key[KEY_ESC]){
+    while(1){
+        if (keypressed()) {
+            int touche = readkey() >> 8;
+            if (touche == KEY_UP) {
+                if (curseur.ligne == 0) {
+                    curseur.ligne = HAUTEUR - 1;
+                }else{
+                    curseur.ligne--;
+                }
+            }
+            if (touche == KEY_DOWN) {
+                if (curseur.ligne == HAUTEUR-1) {
+                    curseur.ligne = 0;
+                }else{
+                    curseur.ligne++;
+                }
+            }
+            if (touche == KEY_RIGHT) {
+                if (curseur.colonne == LARGEUR-1) {
+                    curseur.colonne = 0;
+                }else{
+                    curseur.colonne++;
+                }
+            }
+            if (touche == KEY_LEFT) {
+                if (curseur.colonne == 0) {
+                    curseur.colonne = LARGEUR-1;
+                }else{
+                    curseur.colonne--;
+                }
+            }
+            affiche(&partie->tab,&selection, &curseur);
+
+        }
 
     }
 
