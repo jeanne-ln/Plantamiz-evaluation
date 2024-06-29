@@ -9,4 +9,7 @@ add_executable(plantamiz main.c evaluation.c evaluation.h
         plateau.h
         affichage.c
         affichage.h
-        jeux.c)
+        jeux.c
+        sauvegarde.c
+        sauvegarde.h
+        jeux.h)

@@ -1,106 +1,71 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <allegro.h>
+
 #include "plantamiz.h"
-#include "evaluation.h"
-#include "plateau.h"
-#include "affichage.h"
+#include "jeux.h"
+#include "sauvegarde.h"
 
-void lecturetest(plateau *ptab){
-    char *texte = NULL;
-    long longueur = 0;
-    FILE *f=fopen("test", "r");
-    if(!f){
-        printf("impossible d'ouvrir le fichier");
-        exit(1);
-    }
-    for(int ligne=0;ligne<HAUTEUR;ligne++){
-        if(getline(&texte, &longueur, f) == -1) {
-            printf("il manque la ligne numéro %d\n", ligne);
-            exit(1);
-        }
-        for(int colonne=0;colonne<LARGEUR;colonne++){
-            char symbole = texte[colonne];
-            switch(symbole) {
-                case 'S':
-                case 's':
-                    (*ptab)[colonne][ligne] = 'S';
-                    break;
-                case 'F':
-                case 'f':
-                    (*ptab)[colonne][ligne] = 'F';
-                    break;
-                case 'O':
-                case 'o':
-                    (*ptab)[colonne][ligne] = 'O';
-                    break;
-                case 'P':
-                case 'p':
-                    (*ptab)[colonne][ligne] = 'P';
-                    break;
-                case 'M':
-                case 'm':
-                    (*ptab)[colonne][ligne] = 'M';
-                    break;
-                default:
-                  printf("symbole inconnu ligne %d colonne %d : '%c'\n", ligne, colonne, symbole);
-                  exit(1);
-            }
-        }
-    }
-    free(texte);
-    fclose(f);
+#define NOMBRE_OPTIONS_MENU 3
+
+
+typedef struct {
+    char *texte;
+    void (*action)();
+} OptionMenu;
+
+void quitter();
+void dessiner_menu(OptionMenu *options_menu, int selection);
+
+// Fonction pour quitter le jeu
+void quitter() {
+    clear_to_color(screen, makecol(0, 0, 0));
+    textout_ex(screen, font, "Quitter sélectionné", LARGEUR_ECRAN / 2 - 100, HAUTEUR_ECRAN / 2, makecol(255, 255, 255), -1);
+    readkey();
+    exit(0);
 }
 
-void affichage(plateau *ptab, score *resultat){
-    printf("résultat de l'évaluation :\n");
-    if(resultat) {
-        printf("%d points soleils\n", resultat->nb_soleils);
-        printf("%d points fraises\n", resultat->nb_fraises);
-        printf("%d points oignons\n", resultat->nb_oignons);
-        printf("%d points pommes\n", resultat->nb_pommes);
-        printf("%d points mandarine\n", resultat->nb_mandarine);
-    } else {
-        printf("aucune combinaison trouvée\n");
-    }
-    printf("\n");
-    for(int ligne=0;ligne<HAUTEUR;ligne++){
-        for(int colonne=0;colonne<LARGEUR;colonne++){
-                printf("%c",(*ptab)[colonne][ligne]);
-        }
-        printf("\n");
+// Fonction pour dessiner le menu
+void dessiner_menu(OptionMenu *options_menu, int selection) {
+    clear_to_color(screen, makecol(0, 0, 0));
+    for (int i = 0; i < NOMBRE_OPTIONS_MENU; i++) {
+        int couleur = (i == selection) ? makecol(255, 0, 0) : makecol(255, 255, 255);
+        textout_ex(screen, font, (i == selection) ? "> " : "  ", LARGEUR_ECRAN / 2 - 70, HAUTEUR_ECRAN / 2 - 40 + i * 30, couleur, -1);
+        textout_ex(screen, font, options_menu[i].texte, LARGEUR_ECRAN / 2 - 50, HAUTEUR_ECRAN / 2 - 40 + i * 30, couleur, -1);
     }
 }
 
-
+// Fonction principale du jeu
 int main(void) {
-// Initialisation d'Allegro
     allegro_init();
     install_keyboard();
     set_color_depth(32);
-    set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0);
-    score *resultat=0;
-    position* selection;
-    plateau *ptab=nouveau_plateau();
-    //resultat = evaluation(ptab);
-    affiche(ptab,  selection);
-    position curseur;
-    position select;
-    select.ligne=20;
-    select.colonne=14;
-    curseur.ligne=20;
-    curseur.colonne=13;
-    int bool=0;
-    while(!key[KEY_ESC]) {
-        affiche_curseur(curseur, bool);
-        readkey();
-        bool=!bool;
-        if(bool==0) {
-            affiche_selection(*ptab,select);
-        }
-        if(bool==1){
-            efface_selection(*ptab, select);
+    set_gfx_mode(GFX_AUTODETECT_WINDOWED, LARGEUR_ECRAN, HAUTEUR_ECRAN, 0, 0);
+
+    OptionMenu options_menu[NOMBRE_OPTIONS_MENU] = {
+            {"Nouvelle partie", demarrer_nouvelle_partie},
+            {"Charger une partie", charger_partie},
+            {"Quitter", quitter}
+    };
+
+    int selection = 0;
+    dessiner_menu(options_menu, selection);
+
+    while (1) {
+        if (keypressed()) {
+            int touche = readkey()>>8;
+            if (touche == KEY_UP) {
+                selection = (selection > 0) ? selection - 1 : NOMBRE_OPTIONS_MENU - 1;
+            } else if (touche == KEY_DOWN) {
+                selection = (selection < NOMBRE_OPTIONS_MENU - 1) ? selection + 1 : 0;
+            } else if (touche == KEY_ENTER_PAD) {
+                options_menu[selection].action();
+                // Redessiner le menu après avoir joué ou chargé une partie
+            }
+            dessiner_menu(options_menu, selection);
         }
     }
+
     return 0;
 }END_OF_MAIN()
+
+
