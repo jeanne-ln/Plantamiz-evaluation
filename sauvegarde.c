@@ -43,3 +43,26 @@ void jeu_charger_partie() {
     readkey();
     // Initialisez ici les variables de la partie chargée
 }
+
+void sauvegarder_jeu(const char *nom_fichier, Partie *partie) {
+    FILE *f = fopen(nom_fichier, "wb");
+    if (f == NULL) {
+        perror("Erreur lors de l'ouverture du fichier de sauvegarde");
+        return;
+    }
+
+    // Sauvegarder le score des points
+    fwrite(&partie->points, sizeof(score), 1, f);
+
+    // Sauvegarder le plateau
+    fwrite(partie->tab, sizeof(plateau), 25 * 45, f);
+
+    // Sauvegarder le nombre de coups restants
+    fwrite(&partie->nb_coup_restant, sizeof(int), 1, f);
+
+    // Sauvegarder le temps restant
+    fwrite(&partie->temps_restant, sizeof(int), 1, f);
+
+    fclose(f);
+    printf("Partie sauvegardée avec succès dans %s\n", nom_fichier);
+}
