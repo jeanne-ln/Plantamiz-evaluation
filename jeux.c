@@ -50,7 +50,7 @@ void jouer(Partie* partie){//fonction pour jouer
     time_t start_time;//initialisation du temps
     start_time = time(NULL);//démarrage du chronomètre
     int arret=0;
-    while(!arret || partie->nb_coup_restant<0){// si le minuteur est déppasé ou si le nombre de coup est dépassé on arrête
+    while(!arret && partie->nb_coup_restant>=0){// si le minuteur est déppasé ou si le nombre de coup est dépassé on arrête
         arret=affiche_temps(start_time, 120);//affichage du temps : 120 secondes
         if (keypressed()) {
             position precedent;
