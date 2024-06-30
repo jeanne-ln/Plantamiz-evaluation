@@ -43,7 +43,7 @@ void jouer(Partie* partie){
     int selection=0;
     curseur.colonne=0;
     curseur.ligne=0;
-    affiche(&partie->tab,selection, &curseur);
+    affiche(&partie->tab,selection, &curseur,&partie->points);
     while(1){
         if (keypressed()) {
             position precedent;
@@ -91,13 +91,13 @@ void jouer(Partie* partie){
                 score* delta_score=evaluation(&partie->tab);
                 if(delta_score){
                     mise_a_jour_score(delta_score,partie);
-                    affiche(&partie->tab,selection, &curseur);
+                    affiche(&partie->tab,selection, &curseur,&partie->points);
 
                     while(1) {
                         sleep(1);
                         bouche_les_trous(&partie->tab);
                         delta_score = evaluation(&partie->tab);
-                        affiche(&partie->tab,selection, &curseur);
+                        affiche(&partie->tab,selection, &curseur,&partie->points);
                         if(!delta_score) break;
                         mise_a_jour_score(delta_score,partie);
                     }
@@ -112,7 +112,7 @@ void jouer(Partie* partie){
                 }
 
             }
-            affiche(&partie->tab,selection, &curseur);
+            affiche(&partie->tab,selection, &curseur,&partie->points);
         }
 
     }
