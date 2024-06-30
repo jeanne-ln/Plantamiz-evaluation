@@ -14,21 +14,22 @@
 void mise_a_jour_score(score* delta_score,Partie *partie);
 int affiche_temps(time_t start_time, int temps_limite);
 
+//contrats non-utilisé dans le code
 const Contrat tab_contrats[NOMBRE_CONTRATS] = {
-        {{10,10,10,10,10}, 100, 300},
+        {{10,10,10,10,10}, 75, 300},
         {{30,30,30,30,30}, 50, 250},
         {{40,40,40,40,40}, 40, 200}
 };
 
 
-Partie* nouvelle_partie(){
+Partie* nouvelle_partie(){//création d'une nouvelle partie
     Partie* partie;
     partie=(Partie*)malloc(sizeof(Partie));
     if(!partie){
         printf("impossible d'allouer une partie\n");
         exit(1);
     }
-    partie->points.nb_pommes=0;
+    partie->points.nb_pommes=0;//initialisation du score à 0
     partie->points.nb_soleils=0;
     partie->points.nb_oignons=0;
     partie->points.nb_fraises=0;
@@ -45,12 +46,12 @@ void jouer(Partie* partie){
     int selection=0;
     curseur.colonne=0;
     curseur.ligne=0;
-    affiche(&partie->tab,selection, &curseur,&partie->points);
+    affiche(&partie->tab,selection, &curseur,&partie->points,partie->nb_coup_restant);
     time_t start_time;
     start_time = time(NULL);
     int arret=0;
-    while(!arret){
-        arret=affiche_temps(start_time, 60);
+    while(!arret || partie->nb_coup_restant<=0){
+        arret=affiche_temps(start_time, 120);
         if (keypressed()) {
             position precedent;
             precedent.colonne=curseur.colonne;
@@ -88,27 +89,28 @@ void jouer(Partie* partie){
                     curseur.colonne--;
                 }
             }
-            if(touche== KEY_SPACE){
-                selection=1-selection;
-            }
             if(touche == KEY_ESC){
                 sauvegarder_jeu("sauvegarde_plantamiz.txt",partie);
                 arret=1;
+            }
+            if(touche== KEY_SPACE){
+                selection=1-selection;
             }
             if(selection && (touche==KEY_DOWN || touche==KEY_UP || touche==KEY_LEFT || touche==KEY_RIGHT)){
                 selection=0;
                 echange(&partie->tab, &precedent, &curseur);
                 score* delta_score=evaluation(&partie->tab);
+                partie->nb_coup_restant--;
                 if(delta_score){
                     mise_a_jour_score(delta_score,partie);
-                    affiche(&partie->tab,selection, &curseur,&partie->points);
+                    affiche(&partie->tab,selection, &curseur,&partie->points,partie->nb_coup_restant);
                     affiche_temps(start_time, 60);
 
                     while(1) {
                         sleep(1);
                         bouche_les_trous(&partie->tab);
                         delta_score = evaluation(&partie->tab);
-                        affiche(&partie->tab,selection, &curseur,&partie->points);
+                        affiche(&partie->tab,selection, &curseur,&partie->points,partie->nb_coup_restant);
                         affiche_temps(start_time, 60);
                         if(!delta_score) break;
                         mise_a_jour_score(delta_score,partie);
@@ -116,7 +118,7 @@ void jouer(Partie* partie){
                 }
 
             }
-            affiche(&partie->tab,selection, &curseur,&partie->points);
+            affiche(&partie->tab,selection, &curseur,&partie->points,partie->nb_coup_restant);
             affiche_temps(start_time, 60);
 
         }

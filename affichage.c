@@ -9,7 +9,7 @@
 void affiche_curseur(position *curseur, int is_selected);
 void affiche_selection(plateau *ptab,position* selection);
 
-void affiche(plateau *ptab, int selection, position* curseur, score* points) {
+void affiche(plateau *ptab, int selection, position* curseur, score* points, int coups_restants) {
     // Définir les couleurs pour chaque lettre
     int colors[256];
     colors['S'] = makecol(255, 255, 0);// Jaune pour "Soleil"
@@ -39,6 +39,7 @@ void affiche(plateau *ptab, int selection, position* curseur, score* points) {
     textprintf_ex(screen, font, 10, 545, makecol(255,255,255),-1,"fraise: %d", points->nb_fraises);
     textprintf_ex(screen, font, 10, 555, makecol(255,255,255),-1,"pomme: %d", points->nb_pommes);
     textprintf_ex(screen, font, 10, 565, makecol(255,255,255),-1,"oignon: %d", points->nb_oignons);
+    textprintf_ex(screen, font, 400, 525, makecol(255,255,255),-1,"coups restant: %d", coups_restants);
 
 }
 

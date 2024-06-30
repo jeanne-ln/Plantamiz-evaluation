@@ -28,7 +28,7 @@ void quitter() {
 void dessiner_menu(OptionMenu *options_menu, int selection) {
     clear_to_color(screen, makecol(0, 0, 0));
     for (int i = 0; i < NOMBRE_OPTIONS_MENU; i++) {
-        int couleur = (i == selection) ? makecol(255, 0, 0) : makecol(255, 255, 255);
+        int couleur = (i == selection) ? makecol(255, 0, 0) : makecol(255, 255, 255); // afficher le texte en rouge ou en blanc selon la selection
         textout_ex(screen, font, (i == selection) ? "> " : "  ", LARGEUR_ECRAN / 2 - 70, HAUTEUR_ECRAN / 2 - 40 + i * 30, couleur, -1);
         textout_ex(screen, font, options_menu[i].texte, LARGEUR_ECRAN / 2 - 50, HAUTEUR_ECRAN / 2 - 40 + i * 30, couleur, -1);
     }
@@ -48,11 +48,11 @@ void partie_sauvegarde(){
 
 // Fonction principale du jeu
 int main(void) {
-    allegro_init();
+    allegro_init();//initialisation d'allegro
     install_keyboard();
     set_color_depth(32);
     set_gfx_mode(GFX_AUTODETECT_WINDOWED, LARGEUR_ECRAN, HAUTEUR_ECRAN, 0, 0);
-
+    //options du menu
     OptionMenu options_menu[NOMBRE_OPTIONS_MENU] = {
             {"Nouvelle partie", demarrer_nouvelle_partie},
             {"Charger une partie", partie_sauvegarde},
@@ -63,8 +63,9 @@ int main(void) {
     dessiner_menu(options_menu, selection);
 
     while (1) {
-        if (keypressed()) {
-            int touche = readkey()>>8;
+        if (keypressed()) {//attente d'événement
+            int touche = readkey()>>8;//lecture de la touche
+            //déplacement dans le menu
             if (touche == KEY_UP) {
                 selection = (selection > 0) ? selection - 1 : NOMBRE_OPTIONS_MENU - 1;
             } else if (touche == KEY_DOWN) {
